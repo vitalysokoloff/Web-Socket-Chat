@@ -1,0 +1,14 @@
+{
+    "127.0.0.1": { 
+        "name": "Admin",
+        "background": "#fde4c9",
+        "nameColor": "#79b584",
+        "admin": true
+    },
+    "127.0.0.2": { 
+        "name": "User",
+        "nameColor": "#ff9f9f",
+        "background": "#ffffff",
+        "admin": false
+    }
+}

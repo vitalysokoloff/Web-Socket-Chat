@@ -1,0 +1,11 @@
+{
+    "version": "0.0.1",
+    "type": "module",
+    "main": "app.js",
+    "dependencies": {
+        "express": "^4.17.0",
+        "ws": "^8.11.0"
+    },
+    "author": "Vitaly Sokoloff <vitaliysokoloff@gmail.com>",
+    "license": "MIT"
+}

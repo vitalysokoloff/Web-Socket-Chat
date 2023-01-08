@@ -1,0 +1,9 @@
+{
+    "pagePort": 80,
+    "chatPort": 8080,
+    "pageHost": "127.0.0.1",
+    "chatHost": "127.0.0.1",
+    "serverName": "Server",
+    "chatName": "Чат",
+    "background": "#abcfb2"
+}

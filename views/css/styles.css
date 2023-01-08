@@ -1,0 +1,96 @@
+body{
+    font-size: 16px;
+    background-color: #ececec;
+}
+.parent{
+    border-radius: 5px;
+    border: none;
+    background-color: #f7f7f7;
+    background-image: url("../images/bg.png");
+    padding: 10px;
+    max-width: 1440px;
+    min-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 96%;
+}
+.holder{
+    margin: 5px;
+    justify-content: center;
+    display: flex;   
+}
+.input{
+    border-radius: 5px;
+    border: 6px solid #d1d7af;
+    background-color: #f7f7f7;
+    outline:none; 
+    white-space: pre;
+    resize: none;
+    height: 40px;
+    width: 60%;
+    min-width: 270px;
+    margin: 5px;    
+    overflow-x: hidden;
+    overflow-y: auto;    
+}
+.input::-webkit-scrollbar {
+    width: 5px;
+}  
+.input::-webkit-scrollbar-track {
+    background: none;
+}  
+.input::-webkit-scrollbar-thumb {
+    border-radius: 5px;  
+    border: 3px solid  #fcc991; 
+}
+.send{
+    border-radius: 5px;
+    border: none;
+    background-color: #d1d7af;
+    height: 40px;
+    width: 40px;
+    margin: 5px;
+}
+.messages{
+    height: 94%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+.messages::-webkit-scrollbar {
+    width: 5px;
+}  
+.messages::-webkit-scrollbar-track {
+    background: none;
+}  
+.messages::-webkit-scrollbar-thumb {
+    border-radius: 5px;  
+    border: 3px solid #fcc991;  
+}
+.msg{
+    margin: 5px;
+}
+.msgbody{
+    min-width: 150px;
+    border-radius: 5px;
+    border: none;
+    display: inline-block;
+    max-width: 100%;
+    overflow: initial;
+    padding: 5px;
+    text-align: left;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+.msgFrom{
+    font-weight: bold;
+    padding-left: 5px;
+}
+.msgText{
+    padding: 5px;
+}
+.msgTime{
+    text-align: right;
+    padding-right: 5px;
+    font-style: italic;
+    font-size: 11px;
+}
