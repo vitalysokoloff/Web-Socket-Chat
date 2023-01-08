@@ -28,6 +28,10 @@ export function interact(WSS, users, clients, cfg){
     WSS.on('connection', function(ws, req) {       
         
         let ip = req.socket.remoteAddress;
+        if (ip in users == false){
+            ws.close();
+            return;
+        }        
         let user = users[ip];
 
         console.log("Новое соединение c: " + user.name + " [" + ip  + "]");
@@ -67,9 +71,11 @@ export function interact(WSS, users, clients, cfg){
         });
 
         ws.on('close', function() {
-          console.log("Закрыто соединение c: " + user.name + " [" + ip  + "]");
-          sendToAll(m.makeServerMsg("* " + user.name + " вышел из чата"));
-          delete clients[ip];
+            if (ip in users){
+                console.log("Закрыто соединение c: " + user.name + " [" + ip  + "]");
+                sendToAll(m.makeServerMsg("* " + user.name + " вышел из чата"));
+                delete clients[ip];
+            }             
         });
     
         clients[ip].on('ls', function(data){

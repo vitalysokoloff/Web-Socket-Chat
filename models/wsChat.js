@@ -20,7 +20,7 @@ export class WebSocketChat extends EventEmitter{
     }
 
     run(){
-        route(this._webServer, this._cfg);
+        route(this._webServer, this._cfg, this._users);
         interact(this._webSocketServer, this._users, this._clients, this._cfg);
         
         this.on("topic", function(data){
