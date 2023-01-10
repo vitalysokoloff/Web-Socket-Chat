@@ -5,7 +5,9 @@ Web-чат для локальной сети на основе WebSocket. Ис�
 
 ## Установка и запуск
 1. Скачать\
-```git clone https://github.com/vitalysokoloff/Web-Socket-Chat.git```
+```git clone https://github.com/vitalysokoloff/Web-Socket-Chat.git```\
+Или скачать архив по ссылке:\
+[Web Socket Chat v 0.0.2](https://github.com/vitalysokoloff/Web-Socket-Chat/releases/download/preAplha/Web-Socket-Chat-0-0-2.zip)
 2. Перейти в каталог\
 ```cd pathToDirectory\Web-Socket-Chat```
 3. Установка node-модулей\
