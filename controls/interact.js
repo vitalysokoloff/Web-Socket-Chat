@@ -40,12 +40,6 @@ export function interact(WSS, users, clients, cfg){
 
         clients[ip] = ws;
         clients[ip].send(JSON.stringify(m.makeServerMsg( user.name + ", добро пожаловать в чат " + cfg.chatName + "!", user.name)));
-        let str = `Команды:
-        /ls - Список онлайн пользователей;
-        /topic <text> - сменить тему;
-        Ctrl+Enter - отправить.`
-        clients[ip].send(JSON.stringify(m.makeServerMsg("/hi", user.name)));
-        clients[ip].send(JSON.stringify(m.makeServerMsg(str)));
         clients[ip].send(JSON.stringify(m.makeServerMsg("Тема: " + cfg.topic)));
 
         sendToAll(m.makeServerMsg("* " + user.name + " вошёл в чат"));

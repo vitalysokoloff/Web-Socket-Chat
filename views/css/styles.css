@@ -50,9 +50,10 @@ body{
     height: 40px;
     width: 40px;
     margin: 5px;
+    cursor: pointer;
 }
 .messages{
-    height: 94%;
+    height: 90%;
     overflow-y: scroll;
     overflow-x: hidden;
 }

@@ -24,6 +24,16 @@ document.getElementById("sendButton").addEventListener( "click", function(e){
     send("message");
 });
 
+document.getElementById("lsButton").addEventListener( "click", function(e){
+    sendCmd("message", "/ls");
+    send("message");
+
+});
+
+document.getElementById("topicButton").addEventListener( "click", function(e){
+    sendCmd("message", "/topic ");
+});
+
 wss.onmessage = function(e) {
     let msgObject = JSON.parse(e.data);
     let time = (new Date).toLocaleString();
@@ -74,3 +84,10 @@ function send(id) {
         input.value = "";
     }
 }
+
+function sendCmd(id, str) {
+    let input = document.getElementById(id);
+    input.value = str;
+    input.focus();
+}
+
