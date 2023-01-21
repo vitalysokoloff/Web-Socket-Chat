@@ -40,13 +40,8 @@ export function interact(WSS, users, clients, cfg){
 
         clients[ip] = ws;
         clients[ip].send(JSON.stringify(m.makeServerMsg( user.name + ", добро пожаловать в чат " + cfg.chatName + "!", user.name)));
-        let str = `Команды:
-        /ls - Список онлайн пользователей;
-        /topic <text> - сменить тему;
-        Ctrl+Enter - отправить.`
-        clients[ip].send(JSON.stringify(m.makeServerMsg("/hi", user.name)));
-        clients[ip].send(JSON.stringify(m.makeServerMsg(str)));
         clients[ip].send(JSON.stringify(m.makeServerMsg("Тема: " + cfg.topic)));
+        clients[ip].send(JSON.stringify(m.makeServerMsg("/hi", users[ip].name)));
 
         sendToAll(m.makeServerMsg("* " + user.name + " вошёл в чат"));
       
@@ -70,7 +65,7 @@ export function interact(WSS, users, clients, cfg){
             }
         });
 
-        ws.on('close', function() {
+        clients[ip].on('close', function() {
             if (ip in users){
                 console.log("Закрыто соединение c: " + user.name + " [" + ip  + "]");
                 sendToAll(m.makeServerMsg("* " + user.name + " вышел из чата"));
@@ -79,7 +74,7 @@ export function interact(WSS, users, clients, cfg){
         });
     
         clients[ip].on('ls', function(data){
-            this.send((JSON.stringify(m.makeServerMsg("Пользователи онлайн: " + getUsersList()))));
+            this.send((JSON.stringify(m.makeServerMsg("/users " + getUsersList()))));
         });
 
         clients[ip].on('topic', function(data){

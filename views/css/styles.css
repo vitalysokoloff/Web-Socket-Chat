@@ -14,57 +14,82 @@ body{
     margin-right: auto;
     height: 96%;
 }
-.holder{
+.header{
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    text-align: center;    
+}
+.optn{
+    background-color: #ececec;
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    padding: 5px;
+    width: 300px;   
+    border-radius: 5px;
+}
+.footer{
+    position: absolute;
+    left: 0;
+    bottom: 50px;
+    width: 100%;
+    height: 30px;
     margin: 5px;
     justify-content: center;
     display: flex;   
 }
 .input{
     border-radius: 5px;
-    border: 6px solid #d1d7af;
+    border: 1px solid #000000;
     background-color: #f7f7f7;
     outline:none; 
     white-space: pre;
     resize: none;
     height: 40px;
-    width: 60%;
-    min-width: 270px;
-    margin: 5px;    
+    width: 50%;
+    min-width: 230px;
+    margin: 1px;    
     overflow-x: hidden;
     overflow-y: auto;    
+    margin: 2px;
 }
 .input::-webkit-scrollbar {
-    width: 5px;
+    width: 2px; 
+    padding: 2px;
 }  
 .input::-webkit-scrollbar-track {
     background: none;
 }  
 .input::-webkit-scrollbar-thumb {
-    border-radius: 5px;  
-    border: 3px solid  #fcc991; 
+    border-radius: 2px;    
+    background: #8b8b8b;  
 }
-.send{
+.btn{
     border-radius: 5px;
     border: none;
     background-color: #d1d7af;
     height: 40px;
-    width: 40px;
-    margin: 5px;
+    min-width: 40px;
+    margin: 2px;
+    cursor: pointer;
 }
 .messages{
-    height: 94%;
+    height: 88%;
     overflow-y: scroll;
     overflow-x: hidden;
 }
 .messages::-webkit-scrollbar {
-    width: 5px;
+    width: 2px;
 }  
 .messages::-webkit-scrollbar-track {
     background: none;
 }  
 .messages::-webkit-scrollbar-thumb {
-    border-radius: 5px;  
-    border: 3px solid #fcc991;  
+    border-radius: 2px;  
+    border: 3px solid #8b8b8b;  
 }
 .msg{
     margin: 5px;
