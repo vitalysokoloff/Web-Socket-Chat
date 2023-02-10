@@ -15,22 +15,11 @@ export class WebSocketChat extends EventEmitter{
         this._cfg = config;
         this._clients = {};
         this._webServer = express();
-        this._webSocketServer = new WebSocketServer({ port: this._cfg.chatPort, host: this._cfg.chatHost });        
-        this._cfg.topic = "...";
+        this._webSocketServer = new WebSocketServer({ port: this._cfg.chatPort, host: this._cfg.chatHost}); 
     }
 
     run(){
         route(this._webServer, this._cfg, this._users);
         interact(this._webSocketServer, this._users, this._clients, this._cfg);
-        
-        this.on("topic", function(data){
-            this._changeTopic(data);
-        });
-        
-        console.log("Сервер запущен.");
-    }    
-
-    _changeTopic(data){
-        this._cfg.topic = "Тема: " + data;
-    }
+    } 
 }

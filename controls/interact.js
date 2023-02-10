@@ -11,45 +11,49 @@ export function interact(WSS, users, clients, cfg){
         return reg.test(str);
     }
 
-    function sendToAll(message){
-        for (let key in clients) {        
-            clients[key].send(JSON.stringify(message));
+    function sendToAll(message, channel){
+        for (let key in clients) {    
+            if (users[key].channel == channel)    
+                clients[key].send(JSON.stringify(message));
         }
     }
 
-    function getUsersList(){
+    function getUsersList(channel){
         let list = [];
         for (let key in clients) {
-            list.push(users[key].name);
+            if (users[key].channel == channel) 
+                list.push(users[key].name);
         }
         return list.join(", ");
     }
 
     WSS.on('connection', function(ws, req) {       
-        function heartbeat(){
-            this.isAlive = true;
-        }  
+        function heartbeat(){}  
 
         let ip = req.socket.remoteAddress;
         if (ip in users == false){
             ws.close();
             return;
-        }        
-        let user = users[ip];
-        users[ip].isAlive = true;
+        }
 
-        console.log("Новое соединение c: " + user.name + " [" + ip  + "]");
+        let user = users[ip];
+        let channel = users[ip].channel;
 
         let m = new MessageMaker(cfg);
 
         clients[ip] = ws;
-        clients[ip].send(JSON.stringify(m.makeServerMsg( user.name + ", добро пожаловать в чат " + cfg.chatName + "!", user.name)));
-        clients[ip].send(JSON.stringify(m.makeServerMsg("Тема: " + cfg.topic)));
-        clients[ip].send(JSON.stringify(m.makeServerMsg("/hi", users[ip].name)));
 
-        sendToAll(m.makeServerMsg("* " + user.name + " вошёл в чат"));
+        console.log("Новое соединение c: " + user.name + " [" + ip  + "]");
+        console.log("Список:");
+        console.log(Object.keys(clients));
+
+        ws.send(JSON.stringify(m.makeServerMsg( user.name + ", добро пожаловать на канал #" + channel + "!", user.name)));
+        ws.send(JSON.stringify(m.makeServerMsg("Тема: " + cfg.channels[channel].topic)));
+        ws.send(JSON.stringify(m.makeServerMsg("/hi", users[ip].name)));
+
+        sendToAll(m.makeServerMsg("* " + user.name + " вошёл в чат"), channel);
       
-        clients[ip].on('message', function(message) {  
+        ws.on('message', function(message) {  
             if (message.length > 0){
                 message = message.toString().slice(0, 500);
                 
@@ -59,41 +63,40 @@ export function interact(WSS, users, clients, cfg){
                 }
 
                 if(isTopicCommand(message)){
-                    ws.emit("topic", message);
+                    ws.emit("topic", {channel: channel, message: message});
                     return;
                 }
 
-                sendToAll(m.makeUserMsg(user, message));
+                sendToAll(m.makeUserMsg(user, message), channel);
             }else{
                 return;
             }
         });
 
-        clients[ip].on('close', function() {
-            if (ip in users){
-                clearInterval(interval);
+        ws.on('close', function() {
+            clearInterval(interval);
+            if (ip in users){                
                 console.log("Закрыто соединение c: " + user.name + " [" + ip  + "]");
-                sendToAll(m.makeServerMsg("* " + user.name + " вышел из чата"));
+                sendToAll(m.makeServerMsg("* " + user.name + " вышел из чата"), channel);
                 delete clients[ip];
             }             
         });;
 
-        const interval = setInterval(function ping() {          
-                clients[ip].isAlive = false;
-                clients[ip].ping();
+        const interval = setInterval(function ping() {
+                ws.ping();
         }, 5000);
 
-        clients[ip].on('pong', heartbeat);
+        ws.on('pong', heartbeat);
     
-        clients[ip].on('ls', function(data){
-            this.send((JSON.stringify(m.makeServerMsg("/users " + getUsersList()))));
+        ws.on('ls', function(data){
+            this.send((JSON.stringify(m.makeServerMsg("/users " + getUsersList(channel)))));
         });
 
-        clients[ip].on('topic', function(data){
+        ws.on('topic', function(data){
             if (user.admin){
-                cfg.topic = data.toString().replace("/topic", "");
-                sendToAll(m.makeServerMsg("* " + user.name + " сменил тему."));
-                sendToAll(m.makeServerMsg("Тема: " + cfg.topic));
+                cfg.channels[data.channel].topic = data.message.toString().replace("/topic", "");
+                sendToAll(m.makeServerMsg("* " + user.name + " сменил тему."), channel);
+                sendToAll(m.makeServerMsg("Тема: " + cfg.channels[channel].topic), channel);
             }else{
                 this.send((JSON.stringify(m.makeServerMsg("Вы не админ!!!"))));
             }
