@@ -6,7 +6,7 @@ import fs from "fs";
  * @param {Object} cfg "pagePort":, "chatPort":, "pageHost":, "chatHost":, "serverName": string, "ChatName": string, "background":  "#"
  */
 export function route(webServer, cfg, users){
-    webServer.get("/", function(req, res){
+    webServer.get("/" + cfg.chatName, function(req, res){
       if (req.socket.remoteAddress in users){
         let page = replace(fs.readFileSync( VIEWS + "/index.html", 'utf8'), "title", cfg.chatName);
 	      res.write(page);
