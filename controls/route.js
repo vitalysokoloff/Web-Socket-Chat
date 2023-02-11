@@ -6,15 +6,34 @@ import fs from "fs";
  * @param {Object} cfg "pagePort":, "chatPort":, "pageHost":, "chatHost":, "serverName": string, "ChatName": string, "background":  "#"
  */
 export function route(webServer, cfg, users){
-  for (let key in cfg.channels){
-    makePage(webServer, key, cfg.channels[key].wl, users);
-  }
-
   webServer.get("/", function(req, res){
     res.send("ERROR");
     res.end();
   });
-  webServer.get(/\/\w+.js/, function(req, res){
+
+  webServer.get(/\/\w+$/, function(req, res){
+    let ip = req.socket.remoteAddress;
+    let channelName = req.url.replace("/", "");
+    let isExist = channelName in cfg.channels;
+    if (isExist){
+      if (cfg.channels[channelName].wl.includes(ip)){
+        let page = replace(fs.readFileSync( VIEWS + "/index.html", 'utf8'), "title", "#" + channelName);
+        users[ip].channelName = channelName;
+        res.write(page);
+      }else{
+        res.send("ERROR: WRONG WAY");
+        console.log("err: ip: " + ip + " тучиться тот кого не звали");
+      }
+      res.end();
+    }else{
+      res.send("ERROR: DOESN'T EXIST");
+      console.log("err: ip: " + ip +  " неверно ввёл имя канала");
+      res.end();
+    }
+    
+  });  
+
+  webServer.get(/\/\w+\.js/, function(req, res){
     if (req.socket.remoteAddress in users){
       let page = replace(replace(fs.readFileSync(VIEWS + req.url , 'utf8'), "host", cfg.chatHost),
       "port",
@@ -28,10 +47,12 @@ export function route(webServer, cfg, users){
     }
     res.end();
   });
-  webServer.get(/\/css\/\w+.css/, function(req, res){
+
+  webServer.get(/\/css\/\w+\.css/, function(req, res){
     res.sendFile(VIEWS + req.url);
   });
-  webServer.get(/\/images\/\w+.png/, function(req, res){
+
+  webServer.get(/\/images\/\w+\.png/, function(req, res){
     res.sendFile(VIEWS + req.url);
   });
     
@@ -40,18 +61,4 @@ export function route(webServer, cfg, users){
 
 function replace(str, keyWord, subStr){
     return str.replace("{{" + keyWord + "}}", subStr);    
-}
-
-function makePage(webServer, channelName, whiteList, users){
-  webServer.get("/" + channelName, function(req, res){
-    let ip = req.socket.remoteAddress;
-    if (whiteList.includes(req.socket.remoteAddress)){
-      let page = replace(fs.readFileSync( VIEWS + "/index.html", 'utf8'), "title", "#" + channelName);
-      users[ip].channel = channelName;
-	    res.write(page);
-    }else{
-      res.send("ERROR");
-    }
-    res.end();
-  });
 }

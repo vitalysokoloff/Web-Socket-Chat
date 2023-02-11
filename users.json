@@ -1,14 +1,21 @@
 {
-    "127.0.0.1": { 
+    "192.168.0.175": { 
         "name": "Admin",
         "background": "#fde4c9",
         "nameColor": "#79b584",
         "admin": true
     },
-    "127.0.0.2": { 
-        "name": "User",
+    "192.168.0.106": { 
+        "name": "Phone",
         "nameColor": "#ff9f9f",
         "background": "#ffffff",
         "admin": false
+    },
+    "192.168.0.110": { 
+        "name": "LapTop",
+        "nameColor": "#ff9f00",
+        "background": "#ffffff",
+        "admin": false
     }
+    
 }
