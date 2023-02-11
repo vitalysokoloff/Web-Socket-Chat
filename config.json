@@ -1,8 +1,8 @@
 {
     "pagePort": 80,
     "chatPort": 8080,
-    "pageHost": "192.168.0.175",
-    "chatHost": "192.168.0.175",
+    "pageHost": "127.0.0.1",
+    "chatHost": "127.0.0.1",
     "serverName": "Server",
     "chatName": "main",
     "channels":{
