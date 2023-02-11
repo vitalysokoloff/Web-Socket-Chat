@@ -12,14 +12,17 @@ export class WebSocketChat extends EventEmitter{
     constructor(users, config){
         super();
         this._users = users;
-        this._cfg = config;
-        this._clients = {};
+        this._cfg = config;       
         this._webServer = express();
         this._webSocketServer = new WebSocketServer({ port: this._cfg.chatPort, host: this._cfg.chatHost}); 
+
+        for (let key in this._cfg.channels){
+            this._cfg.channels[key].clients = {};
+        }
     }
 
     run(){
         route(this._webServer, this._cfg, this._users);
-        interact(this._webSocketServer, this._users, this._clients, this._cfg);
+        interact(this._webSocketServer, this._cfg, this._users);
     } 
 }
